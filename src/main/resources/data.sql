@@ -1,0 +1,3 @@
+INSERT INTO users(id_user, name, email, password, created, modified) VALUES ('7d381310-9f61-4477-a0b9-c50f0dd5a265', 'Edwin Gonzalez', 'edwinhalo2y3@hotmail.com', '$2a$10$1JCXRZ/yFrhOhUF3LAeCP.OmJuRYbKoesH4cdY92kYn54CseeWeBe', '2023-08-26 23:52:01.000000', '2021-08-26 23:52:32.000000');
+INSERT INTO phones(id_phone, number, city_code, country_code, id_user) VALUES ('25503731-d6ad-47cc-9fbe-8979a6f92e90', '5547371', '602', '57', '7d381310-9f61-4477-a0b9-c50f0dd5a265');
+INSERT INTO phones(id_phone, number, city_code, country_code, id_user) VALUES ('f6a553aa-943b-4e79-8427-81d19a9fb814', '3182174957', '602', '57', '7d381310-9f61-4477-a0b9-c50f0dd5a265');
