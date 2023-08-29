@@ -16,11 +16,13 @@ Esta api permite la consulta, creacion, actualizacion y eliminacion de **usuario
 - Lombok
 - Mapstruct
 
+## Content
+
 * [Dependencias](#dependencies)
 * [Unit Test](#test)
-* [Consideraciones](#consideraciones)
 * [Solution Diagram](#diagram)
-
+* [How to run component locally](#run)
+* [Additional notes](#notes)
 
 
 ## <a name="dependencies"></a>Dependencies POM
@@ -123,7 +125,7 @@ Esta api permite la consulta, creacion, actualizacion y eliminacion de **usuario
 
 ![Diagrama](./docs/img/diagrama.jpg)
 
-## How to run component locally
+## <a name="run"></a>How to run component locally
 
 **Microservice settings:**
 
@@ -148,6 +150,6 @@ Esta api permite la consulta, creacion, actualizacion y eliminacion de **usuario
 
 ![Diagrama](./docs/img/findIdUser.PNG)
 
-## Additional notes
+## <a name="note"></a>Additional notes
 
 Desarrollado por Edwin Gonzalez  edwinhalo2y3@hotmail.com
