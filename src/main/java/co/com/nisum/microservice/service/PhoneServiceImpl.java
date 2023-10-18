@@ -38,7 +38,7 @@ public class PhoneServiceImpl implements PhoneService{
 	public Phone save(Phone entity) {
 		log.debug("saving Phone instance");
 
-		utilities.validationObjet(entity, "Phone");
+		Utilities.validationObjet(entity, "Phone");
 		validate(entity);
 
 		return phoneRepository.save(entity);
@@ -49,7 +49,7 @@ public class PhoneServiceImpl implements PhoneService{
 	public void delete(Phone entity) {
 		log.debug("deleting Phone instance");
 
-		utilities.validationObjet(entity, "Phone");
+		Utilities.validationObjet(entity, "Phone");
 		phoneRepository.deleteById(entity.getIdPhone());
 
 		log.debug("delete User successful");
@@ -60,7 +60,7 @@ public class PhoneServiceImpl implements PhoneService{
 	public Phone update(Phone entity) {
 		log.debug("updating Phone instance");
 
-		utilities.validationObjet(entity, "User ");
+		Utilities.validationObjet(entity, "User ");
 		validate(entity);
 		return phoneRepository.save(entity);
 	}

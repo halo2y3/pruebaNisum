@@ -57,7 +57,7 @@ public class UserServiceImpl implements UserService{
 	public User save(User entity) {
 		log.debug("saving User instance");
 
-		utilities.validationObjet(entity, "User");
+		Utilities.validationObjet(entity, "User");
 
 		validate(entity);
 
@@ -92,7 +92,7 @@ public class UserServiceImpl implements UserService{
 	public void delete(User entity) {
 		log.debug("deleting User instance");
 
-		utilities.validationObjet(entity, "User");
+		Utilities.validationObjet(entity, "User");
 		userRepository.deleteById(entity.getIdUser());
 
 		log.debug("delete User successful");
@@ -103,7 +103,7 @@ public class UserServiceImpl implements UserService{
 	public User update(User entity) {
 		log.debug("updating User instance");
 
-		utilities.validationObjet(entity, "User ");
+		Utilities.validationObjet(entity, "User ");
 		validate(entity);
 
 		if(!utilities.isValidEmail(entity.getEmail())) {

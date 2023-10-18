@@ -38,7 +38,7 @@ public class SessionServiceImpl implements SessionService{
 	public Session save(Session entity) {
 		log.debug("saving Session instance");
 
-		utilities.validationObjet(entity, "Session");
+		Utilities.validationObjet(entity, "Session");
 		validate(entity);
 
 		return sessionRepository.save(entity);
@@ -49,7 +49,7 @@ public class SessionServiceImpl implements SessionService{
 	public void delete(Session entity) {
 		log.debug("deleting Session instance");
 
-		utilities.validationObjet(entity, "User");
+		Utilities.validationObjet(entity, "User");
 		sessionRepository.deleteById(entity.getIdSession());
 
 		log.debug("delete Session successful");
@@ -60,7 +60,7 @@ public class SessionServiceImpl implements SessionService{
 	public Session update(Session entity) {
 		log.debug("updating Session instance");
 
-		utilities.validationObjet(entity, "Session ");
+		Utilities.validationObjet(entity, "Session ");
 		validate(entity);
 		return sessionRepository.save(entity);
 	}
