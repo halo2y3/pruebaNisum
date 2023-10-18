@@ -1,5 +1,7 @@
 package co.com.nisum.microservice.service;
 
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -8,13 +10,19 @@ import javax.validation.Validator;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import co.com.nisum.microservice.domain.Phone;
+import co.com.nisum.microservice.domain.Session;
 import co.com.nisum.microservice.domain.User;
+import co.com.nisum.microservice.dto.LoginRequestDTO;
+import co.com.nisum.microservice.dto.LoginResponseDTO;
 import co.com.nisum.microservice.exception.ExceptionManager;
 import co.com.nisum.microservice.repository.UserRepository;
 import co.com.nisum.microservice.utility.Utilities;
@@ -27,6 +35,10 @@ public class UserServiceImpl implements UserService{
 
 	@Autowired
 	private UserRepository userRepository;
+	@Autowired
+	private SessionService sessionService;
+	@Autowired
+	private JwtUtilService jwtUtilService;
 	@Autowired
 	private Validator validator;
 	@Autowired
@@ -116,6 +128,55 @@ public class UserServiceImpl implements UserService{
 	public Optional<User> getUserByEmail(String email) {
 		log.debug("getUserByEmail email: {}", email);
 		return userRepository.getUserByEmail(email);
+	}
+
+	@Override
+	public LoginResponseDTO loginUser(LoginRequestDTO loginRequestDTO) {
+		Optional<User> userOptional = userRepository.getUserByEmail(loginRequestDTO.getEmail());
+
+		if(userOptional.isPresent()) {
+			User user=userOptional.get();
+			log.info(bCryptPasswordEncoder.encode(loginRequestDTO.getPass()));
+			if(bCryptPasswordEncoder.matches(loginRequestDTO.getPass(), user.getPassword())) {
+				List<Session> listTokens=user.getTokens();
+				LoginResponseDTO loginResponseDTO=new LoginResponseDTO();
+				for (Session session : listTokens) {
+					if(session.isActive()) {
+						loginResponseDTO.setToken(session.getToken());
+						log.info(loginResponseDTO.toString());
+						return loginResponseDTO;
+					}else {
+						loginResponseDTO =createSessionToken(user, loginRequestDTO);
+						return loginResponseDTO;
+					}
+				}
+				loginResponseDTO =createSessionToken(user, loginRequestDTO);
+				return loginResponseDTO;
+			}
+		}
+
+		throw new ExceptionManager("Credenciales no validas");
+	}
+	
+	private LoginResponseDTO createSessionToken(User user, LoginRequestDTO loginRequestDTO) {
+
+		GrantedAuthority rol= new SimpleGrantedAuthority("USER");
+		List<GrantedAuthority> listGrantedAuthority=new ArrayList<>();
+		listGrantedAuthority.add(rol);
+		UserDetails userDetails=new org.springframework.security.core.userdetails.User(loginRequestDTO.getEmail(), loginRequestDTO.getPass(), listGrantedAuthority);
+
+		Session newSession=new Session();
+		newSession.setActive(false);
+		newSession.setLastLogin(LocalDateTime.now());
+		newSession.setToken(jwtUtilService.generateToken(userDetails));
+		newSession.setUser(user);
+
+		sessionService.save(newSession);
+
+		LoginResponseDTO loginResponseDTO= new LoginResponseDTO();
+		loginResponseDTO.setToken(newSession.getToken());
+		log.info(loginResponseDTO.toString());
+		return loginResponseDTO;
 	}
 
 }

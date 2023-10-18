@@ -23,6 +23,7 @@ import org.springframework.stereotype.Component;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 import co.com.nisum.microservice.domain.Phone;
 import co.com.nisum.microservice.domain.Session;
@@ -52,7 +53,7 @@ public class Utilities {
 		}
 	}
 
-	public void validationObjet(Object objeto, String mensaje) {
+	public static void validationObjet(Object objeto, String mensaje) {
 		if (objeto == null) {
 			throw new ExceptionManager().new NullEntityExcepcion(mensaje);
 		}
@@ -62,6 +63,8 @@ public class Utilities {
 		ObjectMapper mapper = new ObjectMapper();
 		mapper.enable(SerializationFeature.INDENT_OUTPUT);
 		mapper.enable(SerializationFeature.FAIL_ON_EMPTY_BEANS);
+		mapper.registerModule(new JavaTimeModule());
+		mapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
 		try {
 			return mapper.writeValueAsString(objeto);
 		} catch (JsonProcessingException e) {

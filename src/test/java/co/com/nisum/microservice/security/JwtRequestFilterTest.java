@@ -1,5 +1,8 @@
 package co.com.nisum.microservice.security;
 
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.validateMockitoUsage;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.io.IOException;
@@ -33,6 +36,7 @@ class JwtRequestFilterTest {
 	void doFilterInternalTest() throws ServletException, IOException{
 		when(request.getHeader("Authorization")).thenReturn("");
 		jwtRequestFilter.doFilterInternal(request, response, chain);
+		verify(request).getHeader(anyString());
 	}
 
 }

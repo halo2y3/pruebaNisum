@@ -20,7 +20,8 @@ Esta api permite la consulta, creacion, actualizacion y eliminacion de **usuario
 
 * [Dependencias](#dependencies)
 * [Unit Test](#test)
-* [Solution Diagram](#diagram)
+* [Solution Diagram Data Base](#diagramDB)
+* [Solution Diagram Architecture](#diagramA)
 * [How to run component locally](#run)
 * [Additional notes](#notes)
 
@@ -121,7 +122,12 @@ Esta api permite la consulta, creacion, actualizacion y eliminacion de **usuario
 
 ![coverage](./docs/img/test1.PNG)
 
-## <a name="diagram"></a>Solution Diagram
+## <a name="diagramDB"></a>Solution Diagram Data Base
+
+![DiagramaBD](./docs/img/diagramaBD.PNG)
+
+
+## <a name="diagramA"></a>Solution Diagram Architecture
 
 ![Diagrama](./docs/img/diagrama.jpg)
 

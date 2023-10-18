@@ -1,6 +1,9 @@
 package co.com.nisum.microservice.controller;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import java.util.UUID;
 
 import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
 import org.junit.jupiter.api.Order;
@@ -28,8 +31,8 @@ import co.com.nisum.microservice.domain.Phone;
 import co.com.nisum.microservice.domain.User;
 import co.com.nisum.microservice.dto.UserRequestDTO;
 import co.com.nisum.microservice.dto.UserResponseDTO;
+import co.com.nisum.microservice.exception.ExceptionManager;
 import co.com.nisum.microservice.exception.ResponseExceptionHandler;
-import co.com.nisum.microservice.mapper.PhoneMapper;
 import co.com.nisum.microservice.service.PhoneServiceImpl;
 
 
@@ -45,11 +48,7 @@ class UserRestControllerTest {
 	private UserRestController restController;
 
 	@Autowired
-	private PhoneServiceImpl phoneServiceImpl; 
-
-	@Autowired
-	private PhoneMapper phoneMapper;
-
+	private PhoneServiceImpl phoneServiceImpl;
 	@Autowired
 	private MockMvc mockMvc;
 
@@ -162,6 +161,22 @@ class UserRestControllerTest {
 		mockMvc.perform(MockMvcRequestBuilders.delete("/api/service/user/delete/5a4c2115-934a-489d-b9dc-0a0995d3f3f0"))
 		.andDo(MockMvcResultHandlers.print())
 		.andExpect(MockMvcResultMatchers.status().isNotFound());
+	}
+	
+	@Order(6)
+	@Test
+	void updateErrorTest() throws JsonProcessingException {
+		objetoDTO= new UserRequestDTO();
+		objetoDTO.setName("name");
+		objetoDTO.setPassword("Pass123@@");
+		objetoDTO.setEmail("test124567@test.com");
+		objetoDTO.setIdUser(UUID.randomUUID());
+
+		try {
+			restController.update(objetoDTO);	
+		} catch (Exception e) {
+			assertTrue(e instanceof ExceptionManager);
+		}
 	}
 
 }
